@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 160 10% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 160 10% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 160 10% 10%;
+
+    --primary: 152 69% 36%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 150 20% 95%;
+    --secondary-foreground: 160 10% 10%;
+
+    --muted: 150 10% 96%;
+    --muted-foreground: 160 5% 45%;
+
+    --accent: 152 69% 36%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 150 10% 90%;
+    --input: 150 10% 90%;
+    --ring: 152 69% 36%;
+
+    --radius: 0.5rem;
+
+    --dark-bg: 160 20% 8%;
+    --dark-bg-foreground: 0 0% 100%;
+    --dark-section: 160 15% 12%;
+
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .dark {
+    --background: 160 20% 8%;
+    --foreground: 0 0% 95%;
+    --card: 160 15% 12%;
+    --card-foreground: 0 0% 95%;
+    --popover: 160 15% 12%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 152 69% 42%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 160 15% 16%;
+    --secondary-foreground: 0 0% 95%;
+    --muted: 160 10% 18%;
+    --muted-foreground: 150 5% 60%;
+    --accent: 152 69% 42%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 95%;
+    --border: 160 10% 20%;
+    --input: 160 10% 20%;
+    --ring: 152 69% 42%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+  }
+}
+
+@layer components {
+  .section-dark {
+    @apply bg-dark text-dark-foreground;
+  }
+  .section-padding {
+    @apply py-16 md:py-24 px-4 md:px-8;
+  }
+  .section-title {
+    font-family: 'Outfit', sans-serif;
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold leading-tight;
+  }
+  .section-subtitle {
+    @apply text-sm font-semibold uppercase tracking-widest text-primary;
+  }
+  .btn-primary {
+    @apply inline-flex items-center gap-2 bg-primary text-primary-foreground px-8 py-4 rounded-full font-semibold text-sm uppercase tracking-wider transition-all duration-300 hover:brightness-110 hover:shadow-lg hover:shadow-primary/30;
+  }
+  .btn-outline {
+    @apply inline-flex items-center gap-2 border-2 border-primary text-primary px-8 py-4 rounded-full font-semibold text-sm uppercase tracking-wider transition-all duration-300 hover:bg-primary hover:text-primary-foreground;
+  }
+  .btn-outline-light {
+    @apply inline-flex items-center gap-2 border-2 border-primary-foreground/30 text-primary-foreground px-8 py-4 rounded-full font-semibold text-sm uppercase tracking-wider transition-all duration-300 hover:bg-primary hover:border-primary;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-emerald-400;
+  }
+}
