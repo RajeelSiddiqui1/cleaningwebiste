@@ -9,7 +9,7 @@ const isAuthenticated = async (req, res, next) => {
     }
 
 
-    const decoded = jwt.verify(token, processe.env.SECRET_TOKEN)
+    const decoded = jwt.verify(token, process.env.SECRET_TOKEN)
 
     req.user = decoded
 

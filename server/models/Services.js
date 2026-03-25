@@ -14,7 +14,7 @@ const serivcesSchema = new Schema(
     },
     image: {
       type: String,
-      default: " ",
+      default: "",
     },
     points: [
       {
@@ -22,8 +22,16 @@ const serivcesSchema = new Schema(
         required: false,
       },
     ],
+    isActive: {
+      type: Boolean,
+      default: true
+    },
+    specailService: {
+      type: Boolean,
+      default: false
+    },
     charges: {
-      type: Number,
+      type: String, 
       required: false,
     },
     userId: {
@@ -34,7 +42,7 @@ const serivcesSchema = new Schema(
   },
   {
     timestamps: true,
-  },
+  }
 );
 
 const Service = models.Service || model("Service", serivcesSchema);

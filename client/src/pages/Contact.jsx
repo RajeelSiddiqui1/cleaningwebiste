@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Phone, Mail, MapPin, Clock, Send } from "lucide-react";
+import { Phone, Mail, MapPin, Clock, Send, Loader2 } from "lucide-react";
 import { useState } from "react";
+import { contactAPI } from "../lib/api";
 
 // Local image from public/assets/
 const heroImg = "/assets/hero-cleaning.jpg";
@@ -24,11 +25,35 @@ const Contact = () => {
     message: "",
   });
 
-  // TSX type annotation (e: React.FormEvent) removed — pure JSX
-  const handleSubmit = (e) => {
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Thank you for your message. An Express specialist will contact you shortly to discuss your requirements.");
-    setFormData({ name: "", email: "", phone: "", service: "", message: "" });
+    setSubmitting(true);
+    
+    // Map form data to Backend Schema (name, email, subject, message)
+    // We attach phone directly inside the message payload
+    const payload = {
+      name: formData.name,
+      email: formData.email,
+      subject: formData.service || "General Inquiry",
+      message: `Phone: ${formData.phone || "Not Provided"}\n\n${formData.message}`
+    };
+
+    try {
+      const result = await contactAPI.submit(payload);
+      if (result.ok) {
+        alert("Thank you for your message. An Express specialist will contact you shortly to discuss your requirements.");
+        setFormData({ name: "", email: "", phone: "", service: "", message: "" });
+      } else {
+        alert("There was an issue submitting your request. Please try again.");
+      }
+    } catch (error) {
+      console.error("Contact submission failed", error);
+      alert("Submission error, please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -157,8 +182,12 @@ const Contact = () => {
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     className="px-4 py-3 rounded-xl bg-background border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all resize-none"
                   />
-                  <button type="submit" className="btn-primary w-fit">
-                    Send Message <Send size={16} />
+                  <button type="submit" disabled={submitting} className={`btn-primary w-fit ${submitting ? 'opacity-70 cursor-not-allowed' : ''}`}>
+                    {submitting ? (
+                      <>Processing <Loader2 size={16} className="animate-spin" /></>
+                    ) : (
+                      <>Send Message <Send size={16} /></>
+                    )}
                   </button>
                 </form>
               </div>

@@ -10,7 +10,7 @@ const register = async (req, res) => {
       return res.status(400).json({ message: "reuired all feilds" });
     }
 
-    const userEmailExists = await User.findOne({ email: email });
+    const userEmailExists = await User.findOne({ email });
 
     if (userEmailExists) {
       return res.status(400).json({ message: "user email is already exists" });
@@ -22,7 +22,7 @@ const register = async (req, res) => {
       userName,
       email,
       password: hashPassword,
-      role: role || "Admin",
+      role: role || "User",
     });
 
     await newUser.save();
@@ -32,6 +32,7 @@ const register = async (req, res) => {
       user: {
         id: newUser._id,
         email: newUser.email,
+        role: newUser.role,
       },
     });
   } catch (error) {
@@ -64,7 +65,15 @@ const login = async (req, res) => {
       secure: true,
     });
 
-    res.json({ message: "Login successful" });
+    res.json({ 
+      message: "Login successful",
+      user: {
+        id: user._id,
+        email: user.email,
+        role: user.role,
+        userName: user.userName,
+      }
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

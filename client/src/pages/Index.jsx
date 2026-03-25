@@ -1,6 +1,8 @@
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Shield, Leaf, Award, Star, Phone, CheckCircle, Sparkles } from "lucide-react";
+import { ArrowRight, Shield, Leaf, Award, Star, Phone, CheckCircle, Sparkles, ChevronLeft, ChevronRight, User } from "lucide-react";
+import { testimonialAPI, IMAGE_BASE_URL } from "../lib/api";
 
 // Local images from public/assets/
 const heroImg = "/assets/hero-cleaning.jpg";
@@ -19,6 +21,7 @@ const fadeUp = {
 };
 
 const Index = () => {
+
   const services = [
     {
       title: "Home Cleaning",
@@ -44,23 +47,31 @@ const Index = () => {
     { num: "98%", label: "Satisfaction Rate" },
   ];
 
-  const testimonials = [
-    {
-      name: "Ahmed Khan",
-      role: "Business Owner",
-      text: "The Express team has completely transformed our office maintenance. Their professionalism and attention to detail are unparalleled in the industry.",
-    },
-    {
-      name: "Sara Ali",
-      role: "Homeowner",
-      text: "I am consistently impressed by their meticulous cleaning standards. My home looks immaculate every single time. Truly a five-star service!",
-    },
-    {
-      name: "Usman Malik",
-      role: "Hotel Manager",
-      text: "Express provides the most reliable commercial cleaning services we've encountered. They are punctual, efficient, and deliver exceptional results.",
-    },
-  ];
+  const [testimonials, setTestimonials] = useState([]);
+  
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const result = await testimonialAPI.getActive();
+        if (result.ok) {
+          setTestimonials(result.data.testimonials);
+        }
+      } catch (error) {
+        console.error("Failed to fetch testimonials", error);
+      }
+    };
+    fetchTestimonials();
+  }, []);
+
+  const slideLeft = () => {
+    const slider = document.getElementById("testimonial-slider");
+    if (slider) slider.scrollBy({ left: -400, behavior: "smooth" });
+  };
+
+  const slideRight = () => {
+    const slider = document.getElementById("testimonial-slider");
+    if (slider) slider.scrollBy({ left: 400, behavior: "smooth" });
+  };
 
   const faqs = [
     {
@@ -244,47 +255,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* ─── Services Section ─── */}
-      <section className="section-padding">
-        <div className="container mx-auto">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <p className="section-subtitle mb-3">Featured Services</p>
-            <h2 className="section-title">Our Best Cleaning Services</h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {services.map((service, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15 }}
-                className="group rounded-2xl overflow-hidden border border-border hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500"
-              >
-                <div className="relative overflow-hidden h-60">
-                  <img
-                    src={service.img}
-                    alt={service.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-dark/60 to-transparent" />
-                </div>
-                <div className="p-6">
-                  <h3 className="font-heading text-xl font-bold mb-2">{service.title}</h3>
-                  <p className="text-muted-foreground text-sm mb-4">{service.desc}</p>
-                  <Link
-                    to="/services"
-                    className="text-primary text-sm font-semibold inline-flex items-center gap-2 hover:gap-3 transition-all"
-                  >
-                    Learn More <ArrowRight size={14} />
-                  </Link>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
+   
       {/* ─── Stats + CTA ─── */}
       <section className="section-padding bg-dark text-dark-foreground">
         <div className="container mx-auto">
@@ -332,152 +303,75 @@ const Index = () => {
       </section>
 
       {/* ─── Testimonials ─── */}
-      <section className="section-padding">
+      <section className="section-padding overflow-hidden">
         <div className="container mx-auto">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <p className="section-subtitle mb-3">What Clients Say</p>
-            <h2 className="section-title">Hear From Our Happy Clients</h2>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((t, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15 }}
-                className="bg-secondary rounded-2xl p-8 relative"
-              >
-                <div className="flex gap-1 mb-4">
-                  {[...Array(5)].map((_, j) => (
-                    <Star key={j} size={16} className="text-primary fill-primary" />
-                  ))}
-                </div>
-                <p className="text-muted-foreground text-sm leading-relaxed mb-6">"{t.text}"</p>
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center">
-                    <span className="font-heading font-bold text-primary text-sm">{t.name[0]}</span>
-                  </div>
-                  <div>
-                    <p className="font-heading font-semibold text-sm">{t.name}</p>
-                    <p className="text-muted-foreground text-xs">{t.role}</p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── FAQ ─── */}
-      <section className="section-padding bg-secondary">
-        <div className="container mx-auto">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <p className="section-subtitle mb-3">FAQ</p>
-            <h2 className="section-title">Aksar Poochhe Jaane Wale Sawalat</h2>
-          </div>
-          <div className="max-w-3xl mx-auto flex flex-col gap-4">
-            {faqs.map((faq, i) => (
-              <details
-                key={i}
-                className="bg-background rounded-xl border border-border group"
-              >
-                <summary className="p-6 cursor-pointer font-heading font-semibold text-sm md:text-base flex items-center justify-between list-none">
-                  {faq.q}
-                  <span className="text-primary text-xl transition-transform group-open:rotate-45">
-                    +
-                  </span>
-                </summary>
-                <div className="px-6 pb-6 text-muted-foreground text-sm leading-relaxed">
-                  {faq.a}
-                </div>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ─── Special Package ─── */}
-      <section className="section-padding bg-dark text-dark-foreground">
-        <div className="container mx-auto">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <p className="section-subtitle mb-3">✦ Special Package</p>
-            <h2 className="section-title">
-              Microwave, Oven &amp; Gas Stove{" "}
-              <span className="text-primary">Deep Clean</span>
-            </h2>
-            <p className="text-dark-foreground/60 mt-4 text-base leading-relaxed">
-              Exquisite restoration of your kitchen assets — summarized in one elite package.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
-            {[
-              {
-                emoji: "📦",
-                name: "Microwave Oven",
-                items: ["Interior deep clean", "Turntable & tray wash", "Door & seal sanitize", "Exterior polish"],
-              },
-              {
-                emoji: "🔥",
-                name: "Baking Oven",
-                items: ["Rack & tray degreasing", "Interior wall scrub", "Glass door clean", "Exterior wipe-down"],
-              },
-              {
-                emoji: "🍳",
-                name: "Gas Stove / Hob",
-                items: ["Burner head cleaning", "Drip pan degreasing", "Surface scrub & polish", "Knob sanitization"],
-              },
-            ].map((pkg, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15 }}
-                className="bg-dark-section rounded-2xl p-8 border border-dark-foreground/10 hover:border-primary/50 transition-all duration-300 group"
-              >
-                <div className="text-5xl mb-5">{pkg.emoji}</div>
-                <h3 className="font-heading text-xl font-bold mb-4 text-dark-foreground">{pkg.name}</h3>
-                <ul className="flex flex-col gap-3">
-                  {pkg.items.map((item, j) => (
-                    <li key={j} className="flex items-center gap-3 text-sm text-dark-foreground/70">
-                      <span className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
-                        <span className="w-2 h-2 rounded-full bg-primary block" />
-                      </span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Package Banner */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.97 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            className="bg-primary/10 border border-primary/30 rounded-2xl p-8 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6"
-          >
-            <div>
-              <p className="text-primary font-heading font-bold text-sm uppercase tracking-widest mb-2">Exclusive Bundle</p>
-              <h3 className="font-heading text-2xl md:text-3xl font-bold text-dark-foreground">
-                Three Essential Appliances — One Bespoke Price
-              </h3>
-              <p className="text-dark-foreground/60 mt-2 text-sm">
-                Microwave + Baking Oven + Gas Stove. Immaculate cleaning from the inside out. Schedule your session today.
-              </p>
+          <div className="flex flex-wrap items-end justify-between gap-6 mb-16">
+            <div className="max-w-2xl">
+              <p className="section-subtitle mb-3">What Clients Say</p>
+              <h2 className="section-title">Hear From Our Happy Clients</h2>
             </div>
-            <Link
-              to="/contact"
-              className="btn-primary shrink-0"
+            {testimonials.length > 3 && (
+              <div className="flex items-center gap-3">
+                <button onClick={slideLeft} className="w-12 h-12 rounded-full border border-border flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all">
+                  <ChevronLeft size={20} />
+                </button>
+                <button onClick={slideRight} className="w-12 h-12 rounded-full border border-border flex items-center justify-center text-foreground hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all">
+                  <ChevronRight size={20} />
+                </button>
+              </div>
+            )}
+          </div>
+          
+          {testimonials.length === 0 ? (
+            <div className="text-center py-10">
+              <p className="text-muted-foreground italic">No reviews available at the moment.</p>
+            </div>
+          ) : (
+            <div 
+              id="testimonial-slider"
+              className="flex gap-6 overflow-x-auto snap-x snap-mandatory pb-8 scrollbar-hide"
+              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
             >
-              Book Package <ArrowRight size={16} />
-            </Link>
-          </motion.div>
+              {testimonials.map((t, i) => (
+                <motion.div
+                  key={t._id}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1 }}
+                  className="bg-secondary rounded-2xl p-8 min-w-[320px] md:min-w-[400px] snap-center flex flex-col justify-between shrink-0"
+                >
+                  <div>
+                    <div className="flex gap-1 mb-6">
+                      {[...Array(5)].map((_, j) => (
+                        <Star key={j} size={16} className="text-primary fill-primary" />
+                      ))}
+                    </div>
+                    <p className="text-muted-foreground text-sm leading-relaxed mb-8 italic">"{t.text}"</p>
+                  </div>
+                  <div className="flex items-center gap-4 pt-6 border-t border-border/50">
+                    <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center overflow-hidden shrink-0">
+                      {t.image ? (
+                        <img src={`${IMAGE_BASE_URL}/${t.image}`} className="w-full h-full object-cover" alt={t.name}/>
+                      ) : (
+                        <User size={18} className="text-primary"/>
+                      )}
+                    </div>
+                    <div>
+                      <p className="font-heading font-bold text-sm text-foreground">{t.name}</p>
+                      <p className="text-muted-foreground text-xs uppercase tracking-widest">{t.role}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
+
+     
+
+    
       <section className="section-padding bg-primary text-primary-foreground text-center">
         <div className="container mx-auto max-w-2xl">
           <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4">
