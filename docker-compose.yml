@@ -1,0 +1,69 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo
+    container_name: cleaning_mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: 123456
+      MONGO_INITDB_DATABASE: cleaning
+    networks:
+      - cleaning_website
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: [
+        "CMD",
+        "mongosh",
+        "-u", "admin",
+        "-p", "123456",
+        "--authenticationDatabase", "admin",
+        "--eval", "db.adminCommand('ping')"
+      ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+  backend:
+    build:
+      context: ./server
+    container_name: cleaning_backend
+    ports:
+      - "5008:5008"
+    env_file:
+      - ./server/.env
+    networks:
+      - cleaning_website
+    volumes:
+      - uploads_data:/app/uploads
+    depends_on:
+      mongo:
+        condition: service_healthy
+    restart: always
+
+  frontend:
+    build:
+      context: ./client
+    container_name: cleaning_frontend
+    ports:
+      - "5175:80"
+    env_file:
+      - ./client/.env
+    networks:
+      - cleaning_website
+    depends_on:
+      backend:
+        condition: service_started
+    restart: always
+
+networks:
+  cleaning_website:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local
+  uploads_data:
+    driver: local
