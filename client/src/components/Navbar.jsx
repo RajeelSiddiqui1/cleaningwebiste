@@ -55,11 +55,11 @@ const Header = () => {
       <div className="container mx-auto flex items-center justify-between h-20 px-4 md:px-8">
         <Link to="/" className="flex items-center gap-2">
           <div className="w-12 h-12 bg-primary rounded-lg flex items-center justify-center shrink-0">
-            <Sparkles className="w-6 h-6 text-primary-foreground" />
+            <img src="./favicon.jpg" alt="" />
           </div>
           <div className="leading-tight">
-            <span className="font-heading text-base font-bold text-primary block">CleanPro</span>
-            <span className="font-heading text-xs font-semibold text-dark-foreground/70 block">Professional Cleaning Services</span>
+            <span className="font-heading text-base font-bold text-primary block">Express Residential </span>
+            <span className="font-heading text-xs font-semibold text-dark-foreground/70 block">Commercial Cleaning Services</span>
           </div>
         </Link>
 

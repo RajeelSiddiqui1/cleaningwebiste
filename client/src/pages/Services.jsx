@@ -63,6 +63,10 @@ const Services = () => {
     fetchServices();
   }, []);
 
+  // Separate special services and normal services
+  const specialServices = services.filter(s => s.specailService);
+  const normalServices = services.filter(s => !s.specailService);
+
   const getIcon = (title) => {
     return iconMap[title] || Sparkles;
   };
@@ -123,65 +127,163 @@ const Services = () => {
               <p className="text-muted-foreground">We're currently updating our service catalog.</p>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {services.map((service, i) => {
-                const Icon = getIcon(service.title);
-                return (
-                  <motion.div
-                    key={service._id}
-                    initial={{ opacity: 0, y: 30 }}
+            <>
+              {/* Special Packages Section */}
+              {specialServices.length > 0 && (
+                <div className="mb-16">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                    className="group rounded-2xl overflow-hidden border border-border bg-card hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 cursor-pointer"
-                    onClick={() => setSelectedService(service)}
+                    className="text-center mb-10"
                   >
-                    <div className="relative overflow-hidden h-60">
-                      {service.image ? (
-                        <img
-                          src={`${IMAGE_BASE_URL}/${service.image}`}
-                          alt={service.title}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-muted flex items-center justify-center">
-                          <Icon size={48} className="text-muted-foreground/30" />
-                        </div>
-                      )}
-                      <div className="absolute inset-0 bg-gradient-to-t from-dark/60 to-transparent" />
-                      <div className="absolute top-4 left-4 w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-lg">
-                        <Icon size={22} className="text-primary-foreground" />
-                      </div>
-
-                      {service.specailService && (
-                        <div className="absolute top-4 right-4 bg-primary/90 text-primary-foreground text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-lg backdrop-blur-sm">
-                          Special Edition
-                        </div>
-                      )}
-                    </div>
-                    <div className="p-8">
-                      <h3 className="font-heading text-2xl font-bold mb-3 group-hover:text-primary transition-colors">
-                        {service.title}
-                      </h3>
-                      <p className="text-muted-foreground text-sm mb-6 leading-relaxed line-clamp-3">
-                        {service.description}
-                      </p>
-                      <div className="flex items-center justify-between mt-auto">
-                        <button className="flex items-center gap-2 text-primary font-bold text-sm uppercase tracking-wider group/btn">
-                          View Details 
-                          <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
-                        </button>
-                        {service.charges && (
-                          <span className="text-xs font-bold bg-primary/10 text-primary px-3 py-1 rounded-full">
-                            Starting {service.charges}
-                          </span>
-                        )}
-                      </div>
-                    </div>
+                    <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">
+                      Special <span className="text-primary">Packages</span>
+                    </h2>
+                    <p className="text-muted-foreground max-w-2xl mx-auto">
+                      Exclusive premium cleaning solutions designed for discerning clients seeking the ultimate in cleanliness and care.
+                    </p>
                   </motion.div>
-                );
-              })}
-            </div>
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {specialServices.map((service, i) => {
+                      const Icon = getIcon(service.title);
+                      return (
+                        <motion.div
+                          key={service._id}
+                          initial={{ opacity: 0, y: 30 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: i * 0.1 }}
+                          className="group rounded-2xl overflow-hidden border border-border bg-card hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 cursor-pointer"
+                          onClick={() => setSelectedService(service)}
+                        >
+                          <div className="relative overflow-hidden h-60">
+                            {service.image ? (
+                              <img
+                                src={`${IMAGE_BASE_URL}/${service.image}`}
+                                alt={service.title}
+                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                              />
+                            ) : (
+                              <div className="w-full h-full bg-muted flex items-center justify-center">
+                                <Icon size={48} className="text-muted-foreground/30" />
+                              </div>
+                            )}
+                            <div className="absolute inset-0 bg-gradient-to-t from-dark/60 to-transparent" />
+                            <div className="absolute top-4 left-4 w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-lg">
+                              <Icon size={22} className="text-primary-foreground" />
+                            </div>
+
+                            {service.specailService && (
+                              <div className="absolute top-4 right-4 bg-primary/90 text-primary-foreground text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-lg backdrop-blur-sm">
+                                Special Edition
+                              </div>
+                            )}
+                          </div>
+                          <div className="p-8">
+                            <h3 className="font-heading text-2xl font-bold mb-3 group-hover:text-primary transition-colors">
+                              {service.title}
+                            </h3>
+                            <p className="text-muted-foreground text-sm mb-6 leading-relaxed line-clamp-3">
+                              {service.description}
+                            </p>
+                            <div className="flex items-center justify-between mt-auto">
+                              <button className="flex items-center gap-2 text-primary font-bold text-sm uppercase tracking-wider group/btn">
+                                View Details 
+                                <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
+                              </button>
+                              {service.charges && (
+                                <span className="text-xs font-bold bg-primary/10 text-primary px-3 py-1 rounded-full">
+                                   $ {service.charges}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Normal Services Section */}
+              {normalServices.length > 0 && (
+                <div>
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    className="text-center mb-10"
+                  >
+                    <h2 className="font-heading text-3xl md:text-4xl font-bold text-foreground mb-4">
+                      Our <span className="text-primary">Services</span>
+                    </h2>
+                    <p className="text-muted-foreground max-w-2xl mx-auto">
+                      Professional cleaning solutions tailored to meet your residential, commercial, and industrial needs.
+                    </p>
+                  </motion.div>
+                  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {normalServices.map((service, i) => {
+                      const Icon = getIcon(service.title);
+                      return (
+                        <motion.div
+                          key={service._id}
+                          initial={{ opacity: 0, y: 30 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          viewport={{ once: true }}
+                          transition={{ delay: i * 0.1 }}
+                          className="group rounded-2xl overflow-hidden border border-border bg-card hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 cursor-pointer"
+                          onClick={() => setSelectedService(service)}
+                        >
+                          <div className="relative overflow-hidden h-60">
+                            {service.image ? (
+                              <img
+                                src={`${IMAGE_BASE_URL}/${service.image}`}
+                                alt={service.title}
+                                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                              />
+                            ) : (
+                              <div className="w-full h-full bg-muted flex items-center justify-center">
+                                <Icon size={48} className="text-muted-foreground/30" />
+                              </div>
+                            )}
+                            <div className="absolute inset-0 bg-gradient-to-t from-dark/60 to-transparent" />
+                            <div className="absolute top-4 left-4 w-12 h-12 bg-primary rounded-xl flex items-center justify-center shadow-lg">
+                              <Icon size={22} className="text-primary-foreground" />
+                            </div>
+
+                            {service.specailService && (
+                              <div className="absolute top-4 right-4 bg-primary/90 text-primary-foreground text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-lg backdrop-blur-sm">
+                                Special Edition
+                              </div>
+                            )}
+                          </div>
+                          <div className="p-8">
+                            <h3 className="font-heading text-2xl font-bold mb-3 group-hover:text-primary transition-colors">
+                              {service.title}
+                            </h3>
+                            <p className="text-muted-foreground text-sm mb-6 leading-relaxed line-clamp-3">
+                              {service.description}
+                            </p>
+                            <div className="flex items-center justify-between mt-auto">
+                              <button className="flex items-center gap-2 text-primary font-bold text-sm uppercase tracking-wider group/btn">
+                                View Details 
+                                <ArrowRight size={16} className="group-hover/btn:translate-x-1 transition-transform" />
+                              </button>
+                              {service.charges && (
+                                <span className="text-xs font-bold bg-primary/10 text-primary px-3 py-1 rounded-full">
+                                  $ {service.charges}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </motion.div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>
@@ -235,7 +337,7 @@ const Services = () => {
                     </span>
                     {selectedService.charges && (
                       <span className="text-muted-foreground text-xs font-medium">
-                        ✦ {selectedService.charges}
+                        ✦ $ {selectedService.charges}
                       </span>
                     )}
                   </div>

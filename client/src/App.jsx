@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Header from "./components/Navbar";
 import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
 import Index from "./pages/Index";
 import About from "./pages/About";
 import Services from "./pages/Services";
@@ -16,6 +17,7 @@ import AdminServices from "./pages/admin/AdminServices";
 import AdminBookings from "./pages/admin/AdminBookings";
 import AdminTestimonials from "./pages/admin/AdminTestimonials";
 import AdminContacts from "./pages/admin/AdminContacts";
+import AdminUsers from "./pages/admin/AdminUsers";
 import AdminSettings from "./pages/admin/AdminSettings";
 import AdminRoute from "./pages/admin/AdminRoute";
 import "./app.css";
@@ -23,6 +25,7 @@ import "./app.css";
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<>
@@ -107,6 +110,7 @@ function App() {
           <Route path="bookings" element={<AdminBookings />} />
           <Route path="testimonials" element={<AdminTestimonials />} />
           <Route path="contacts" element={<AdminContacts />} />
+          <Route path="users" element={<AdminUsers />} />
           <Route path="settings" element={<AdminSettings />} />
         </Route>
 

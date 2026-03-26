@@ -33,7 +33,15 @@ export const createBooking = async (req, res) => {
 export const getUserBookings = async (req, res) => {
   try {
     const userId = req.user.id;
-    const bookings = await Booking.find({ user: userId })
+    const userEmail = req.user.email;
+    
+    // First try to get bookings by user ID, then also get by email
+    const bookings = await Booking.find({
+      $or: [
+        { user: userId },
+        { email: userEmail }
+      ]
+    })
       .populate('service', 'title image charges')
       .sort({ createdAt: -1 });
 

@@ -257,7 +257,7 @@ const BookNow = () => {
                       Estimated Cost
                     </span>
                     <span className="font-heading text-xl font-bold text-primary">
-                      {service.charges}
+                     $ {service.charges}
                     </span>
                   </div>
                 )}

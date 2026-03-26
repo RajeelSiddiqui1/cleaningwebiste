@@ -28,7 +28,16 @@ export const submitContact = async (req, res) => {
 export const getUserContacts = async (req, res) => {
   try {
     const userId = req.user.id;
-    const contacts = await Contact.find({ user: userId }).sort({ createdAt: -1 });
+    const userEmail = req.user.email;
+    
+    // First try to get contacts by user ID, then also get by email
+    const contacts = await Contact.find({
+      $or: [
+        { user: userId },
+        { email: userEmail }
+      ]
+    }).sort({ createdAt: -1 });
+    
     res.status(200).json({ contacts });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });

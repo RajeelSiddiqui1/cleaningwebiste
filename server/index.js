@@ -7,6 +7,7 @@ import serviceRoute from "./routes/service.route.js"
 import bookingRoute from "./routes/booking.route.js"
 import testimonialRoute from "./routes/testimonial.route.js"
 import contactRoute from "./routes/contact.route.js"
+import adminRoute from "./routes/admin.route.js"
 import cors from "cors"
 import path from "path";
 import { fileURLToPath } from "url";
@@ -40,6 +41,7 @@ app.use("/api/service", serviceRoute);
 app.use("/api/booking", bookingRoute);
 app.use("/api/testimonial", testimonialRoute);
 app.use("/api/contact", contactRoute);
+app.use("/api/admin", adminRoute);
 
 app.listen(PORT, () => {
   console.log(`server is runing on ${PORT}`);

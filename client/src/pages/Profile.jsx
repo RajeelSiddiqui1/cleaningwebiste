@@ -153,7 +153,7 @@ const Profile = () => {
                                 <div className="flex justify-between items-start mb-2">
                                   <h4 className="font-heading text-xl font-bold">{booking.service?.title || "Unknown Service"}</h4>
                                   {booking.service?.charges && (
-                                    <span className="text-sm font-semibold text-primary">{booking.service.charges}</span>
+                                    <span className="text-sm font-semibold text-primary">$ {booking.service.charges}</span>
                                   )}
                                 </div>
                                 

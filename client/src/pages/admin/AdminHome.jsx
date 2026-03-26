@@ -3,33 +3,47 @@ import {
   Package,
   Users,
   Calendar,
-  TrendingUp,
+  MessageSquare,
   Loader2,
   Sparkles,
   Clock
 } from "lucide-react";
-
-const stats = [
-  { label: "Total Services", value: "12", icon: Package, trend: "+3 this month" },
-  { label: "Active Users", value: "248", icon: Users, trend: "+18%" },
-  { label: "Bookings", value: "86", icon: Calendar, trend: "+12%" },
-  { label: "Revenue", value: "$12,450", icon: TrendingUp, trend: "+8%" },
-];
-
-const recentActivities = [
-  { id: 1, action: "New service added", service: "Deep Cleaning", time: "2 hours ago" },
-  { id: 2, action: "Booking confirmed", service: "Office Cleaning", time: "4 hours ago" },
-  { id: 3, action: "User registration", service: "John Doe", time: "6 hours ago" },
-  { id: 4, action: "Payment received", service: "$350", time: "1 day ago" },
-];
+import { adminAPI } from "../../lib/api";
 
 const AdminHome = () => {
   const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({
+    totalServices: 0,
+    totalUsers: 0,
+    totalBookings: 0,
+    totalInquiries: 0
+  });
+  const [activities, setActivities] = useState([]);
 
   useEffect(() => {
-    // Simulate loading
-    setTimeout(() => setLoading(false), 800);
+    const fetchStats = async () => {
+      try {
+        const result = await adminAPI.getStats();
+        if (result.ok) {
+          setStats(result.data.stats);
+          setActivities(result.data.recentActivities);
+        }
+      } catch (error) {
+        console.error("Failed to fetch dashboard stats:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
   }, []);
+
+  const statsConfig = [
+    { label: "Total Services", value: stats.totalServices, icon: Package, color: "text-blue-600" },
+    { label: "Active Users", value: stats.totalUsers, icon: Users, color: "text-emerald-600" },
+    { label: "Bookings", value: stats.totalBookings, icon: Calendar, color: "text-orange-600" },
+    { label: "Inquiries", value: stats.totalInquiries, icon: MessageSquare, color: "text-purple-600" },
+  ];
 
   if (loading) {
     return (
@@ -53,16 +67,15 @@ const AdminHome = () => {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {stats.map((stat, index) => (
+        {statsConfig.map((stat, index) => (
           <div
             key={index}
             className="bg-card border border-border rounded-2xl p-6 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
           >
             <div className="flex items-center justify-between mb-4">
               <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
-                <stat.icon className="w-6 h-6 text-primary" />
+                <stat.icon className={`w-6 h-6 ${stat.color || 'text-primary'}`} />
               </div>
-              <span className="text-sm text-primary font-medium">{stat.trend}</span>
             </div>
             <h3 className="font-heading text-2xl font-bold text-foreground mb-1">
               {stat.value}
@@ -89,13 +102,13 @@ const AdminHome = () => {
               className="p-4 bg-muted rounded-xl hover:bg-primary/10 hover:border-primary/30 border border-transparent transition-all duration-200 text-center"
             >
               <Package className="w-6 h-6 text-primary mx-auto mb-2" />
-              <span className="text-sm font-medium text-foreground">Add Service</span>
+              <span className="text-sm font-medium text-foreground">Manage Services</span>
             </a>
             <a
-              href="/admin/services"
+              href="/admin/bookings"
               className="p-4 bg-muted rounded-xl hover:bg-primary/10 hover:border-primary/30 border border-transparent transition-all duration-200 text-center"
             >
-              <Users className="w-6 h-6 text-primary mx-auto mb-2" />
+              <Calendar className="w-6 h-6 text-primary mx-auto mb-2" />
               <span className="text-sm font-medium text-foreground">View Bookings</span>
             </a>
           </div>
@@ -112,20 +125,26 @@ const AdminHome = () => {
             </h3>
           </div>
           <div className="space-y-4">
-            {recentActivities.map((activity) => (
-              <div
-                key={activity.id}
-                className="flex items-center justify-between py-2 border-b border-border/50 last:border-0"
-              >
-                <div>
-                  <p className="text-sm font-medium text-foreground">
-                    {activity.action}
-                  </p>
-                  <p className="text-xs text-muted-foreground">{activity.service}</p>
+            {activities.length > 0 ? (
+              activities.map((activity) => (
+                <div
+                  key={activity.id}
+                  className="flex items-center justify-between py-2 border-b border-border/50 last:border-0"
+                >
+                  <div>
+                    <p className="text-sm font-medium text-foreground">
+                      {activity.action}
+                    </p>
+                    <p className="text-xs text-muted-foreground">{activity.service}</p>
+                  </div>
+                  <span className="text-xs text-muted-foreground">
+                    {new Date(activity.time).toLocaleDateString()}
+                  </span>
                 </div>
-                <span className="text-xs text-muted-foreground">{activity.time}</span>
-              </div>
-            ))}
+              ))
+            ) : (
+              <p className="text-center py-4 text-muted-foreground text-sm">No recent activity</p>
+            )}
           </div>
         </div>
       </div>
@@ -135,10 +154,10 @@ const AdminHome = () => {
         <div className="flex items-center justify-between">
           <div>
             <h2 className="font-heading text-2xl font-bold mb-2">
-              Welcome to CleanPro Admin
+              Welcome to Express Admin
             </h2>
             <p className="text-primary-foreground/80">
-              Manage your cleaning services, track bookings, and grow your business.
+              Manage your residential and commercial cleaning operations with ease.
             </p>
           </div>
           <Sparkles className="w-16 h-16 text-primary-foreground/20 hidden md:block" />

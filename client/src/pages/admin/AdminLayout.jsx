@@ -7,7 +7,7 @@ import {
   LogOut,
   Menu,
   X,
-  Sparkles,
+  Users,
   CalendarDays,
   MessageSquareQuote,
   MessageSquare
@@ -20,7 +20,7 @@ const menuItems = [
   { path: "/admin/bookings", label: "Bookings", icon: CalendarDays },
   { path: "/admin/testimonials", label: "Testimonials", icon: MessageSquareQuote },
   { path: "/admin/contacts", label: "Inbox", icon: MessageSquare },
-  { path: "/admin/settings", label: "Settings", icon: Settings },
+  { path: "/admin/users", label: "Users", icon: Users },
 ];
 
 const AdminLayout = () => {
@@ -43,8 +43,8 @@ const AdminLayout = () => {
       <div className="lg:hidden fixed top-0 left-0 right-0 z-50 px-4 py-3 flex items-center justify-between"
         style={{ backgroundColor: "#1C9B60" }}>
         <div className="flex items-center gap-2">
-          <Sparkles className="w-6 h-6 text-white" />
-          <span className="font-heading font-bold text-lg" style={{ color: '#ffffff' }}>CleanPro Admin</span>
+           <img src="./favicon.jpg" alt="" />
+          <span className="font-heading font-bold text-lg" style={{ color: '#ffffff' }}>Admin Dashboard</span>
         </div>
         <button
           onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -71,8 +71,8 @@ const AdminLayout = () => {
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center gap-2 mb-10">
-          <Sparkles className="w-8 h-8 text-white" />
-          <span className="font-heading font-bold text-xl" style={{ color: '#ffffff' }}>CleanPro</span>
+         
+          <span className="font-heading font-bold text-xl" style={{ color: '#ffffff' }}>Admin Dashboard</span>
         </div>
 
         <nav className="space-y-2">

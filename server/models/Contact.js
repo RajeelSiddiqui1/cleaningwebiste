@@ -7,11 +7,11 @@ const contactSchema = new mongoose.Schema(
       ref: "User",
       required: false, // User might not be logged in, but we link it if they are
     },
-    name: {
+    email: {
       type: String,
       required: true,
     },
-    email: {
+    name: {
       type: String,
       required: true,
     },

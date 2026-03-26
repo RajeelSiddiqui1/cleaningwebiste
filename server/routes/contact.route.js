@@ -15,7 +15,7 @@ const optionalAuth = (req, res, next) => {
   const token = req.cookies.token || (req.headers.authorization && req.headers.authorization.split(" ")[1]);
   if (token) {
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = jwt.verify(token, process.env.SECRET_TOKEN);
       req.user = decoded;
     } catch (err) {
       // ignore empty/bad token, let them submit as guest

@@ -56,13 +56,18 @@ const login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ id: user._id, role: user.role }, process.env.SECRET_TOKEN, {
+    const token = jwt.sign({ id: user._id, role: user.role, email: user.email }, process.env.SECRET_TOKEN, {
       expiresIn: "7d",
     });
 
+    // Determine if we're in production
+    const isProduction = process.env.NODE_ENV === 'production';
+
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
+      secure: isProduction,
+      sameSite: isProduction ? 'none' : 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
     });
 
     res.json({ 

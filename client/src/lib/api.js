@@ -204,6 +204,12 @@ export const contactAPI = {
   updateStatus: (id, status) => apiCall(`/contact/${id}/status`, { method: "PATCH", body: JSON.stringify({ status }) }),
 };
 
+// Admin API
+export const adminAPI = {
+  getStats: () => apiCall("/admin/stats"),
+  getUsers: () => apiCall("/admin/users"),
+};
+
 // Helper to check if user is logged in
 export const isAuthenticated = () => {
   return localStorage.getItem("userEmail") || localStorage.getItem("adminEmail");
@@ -220,4 +226,4 @@ export const isAdmin = () => {
 };
 
 export { API_BASE_URL, IMAGE_BASE_URL };
-export default { authAPI, serviceAPI, bookingAPI, testimonialAPI, contactAPI, isAuthenticated, getUserRole, isAdmin };
+export default { authAPI, serviceAPI, bookingAPI, testimonialAPI, contactAPI, adminAPI, isAuthenticated, getUserRole, isAdmin };
