@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_API_URL || "http://153.92.209.177:5008/";
+const BASE_URL = import.meta.env.VITE_API_URL || "http://153.92.209.177:5175";
 const API_BASE_URL = `${BASE_URL}/api`;
 const IMAGE_BASE_URL = `${BASE_URL}/uploads`;
 
