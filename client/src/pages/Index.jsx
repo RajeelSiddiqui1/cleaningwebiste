@@ -270,13 +270,13 @@ const Index = () => {
                 <Link to="/contact" className="btn-primary">
                   Contact Us <ArrowRight size={16} />
                 </Link>
-                <a href="tel:+923001234567" className="flex items-center gap-3 text-dark-foreground">
+                <a href="tel:4168044646" className="flex items-center gap-3 text-dark-foreground">
                   <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
                     <Phone size={18} className="text-primary" />
                   </div>
                   <div>
                     <p className="text-xs text-dark-foreground/50">Need Help?</p>
-                    <p className="font-semibold text-sm">+92 300 1234567</p>
+                    <p className="font-semibold text-sm">416 804 4646</p>
                   </div>
                 </a>
               </div>

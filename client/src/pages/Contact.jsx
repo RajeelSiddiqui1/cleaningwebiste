@@ -88,7 +88,7 @@ const Contact = () => {
               Whether you have an inquiry or require a tailored consultation — our directors are available 24/7.
             </motion.p>
             <motion.div variants={fadeUp} custom={3} className="flex flex-wrap gap-4">
-              <a href="tel:+923001234567" className="btn-primary">
+              <a href="tel:4168044646" className="btn-primary">
                 <Phone size={16} /> Call Now
               </a>
               <a href="mailto:info@expressclean.com" className="btn-outline-light">
@@ -111,9 +111,9 @@ const Contact = () => {
               </p>
               <div className="flex flex-col gap-6">
                 {[
-                  { icon: Phone, label: "Phone", value: "+92 300 1234567" },
+                  { icon: Phone, label: "Phone", value: "416 804 4646" },
                   { icon: Mail, label: "Email", value: "info@expressclean.com" },
-                  { icon: MapPin, label: "Address", value: "123 Main Street, Lahore, Pakistan" },
+                  { icon: MapPin, label: "Address", value: "76 birkdale road , Scarborough, M1P3R5" },
                   { icon: Clock, label: "Working Hours", value: "Mon - Sat: 8:00 AM - 8:00 PM" },
                 ].map((item, i) => (
                   <div key={i} className="flex items-start gap-4">
@@ -200,7 +200,7 @@ const Contact = () => {
       <section className="h-80 bg-muted flex items-center justify-center">
         <div className="text-center">
           <MapPin size={48} className="text-primary mx-auto mb-4" />
-          <p className="font-heading font-semibold text-lg">123 Main Street, Lahore, Pakistan</p>
+          <p className="font-heading font-semibold text-lg">76 birkdale road , Scarborough, M1P3R5</p>
           <p className="text-muted-foreground text-sm">Interactive Google Map integration available upon request.</p>
         </div>
       </section>

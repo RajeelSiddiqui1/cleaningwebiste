@@ -80,7 +80,7 @@ const Footer = () => {
             <div className="flex flex-col gap-4">
               <div className="flex items-start gap-3">
                 <Phone size={16} className="text-primary mt-1 shrink-0" />
-                <span className="text-dark-foreground/60 text-sm">+92 300 1234567</span>
+                <span className="text-dark-foreground/60 text-sm">416 804 4646</span>
               </div>
               <div className="flex items-start gap-3">
                 <Mail size={16} className="text-primary mt-1 shrink-0" />
@@ -88,7 +88,7 @@ const Footer = () => {
               </div>
               <div className="flex items-start gap-3">
                 <MapPin size={16} className="text-primary mt-1 shrink-0" />
-                <span className="text-dark-foreground/60 text-sm">123 Main Street, Lahore, Pakistan</span>
+                <span className="text-dark-foreground/60 text-sm">76 birkdale road , Scarborough, M1P3R5</span>
               </div>
             </div>
           </div>
