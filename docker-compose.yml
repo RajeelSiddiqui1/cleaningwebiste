@@ -1,69 +1,69 @@
 version: "3.8"
 
 services:
+  nginx:
+    build: ./nginx
+    container_name: cleaning_website_nginx_cont
+    ports:
+      - "8081:80"
+    depends_on:
+      - backend
+    networks:
+      - cleaning-website
+    restart: always
+
   mongo:
-    image: mongo
-    container_name: cleaning_mongo
+    image: mongo:latest
+    container_name: cleaning-website-mongo
     environment:
+      MONGO_INITDB_DATABASE: cleaning-website-mongo
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: 123456
-      MONGO_INITDB_DATABASE: cleaning
     networks:
-      - cleaning_website
+      - cleaning-website
     volumes:
-      - mongo-data:/data/db
+      - cleaning-website-mongo:/data/db
+    restart: always
     healthcheck:
-      test: [
-        "CMD",
-        "mongosh",
-        "-u", "admin",
-        "-p", "123456",
-        "--authenticationDatabase", "admin",
-        "--eval", "db.adminCommand('ping')"
-      ]
+      test: ["CMD", "mongosh", "-u", "admin", "-p", "123456", "--authenticationDatabase", "admin", "--eval", "db.adminCommand('ping')"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 60s
 
+
   backend:
-    build:
-      context: ./server
-    container_name: cleaning_backend
+    build: ./server
+    container_name: cleaning_website_backend
     ports:
-      - "5008:5008"
-    env_file:
-      - ./server/.env
+      - "5002:5002"
+    env_file: ./server/.env
     networks:
-      - cleaning_website
+      - cleaning-website
     volumes:
       - uploads_data:/app/uploads
     depends_on:
-      mongo:
-        condition: service_healthy
+        mongo:
+         condition: service_healthy
     restart: always
 
   frontend:
     build:
       context: ./client
-    container_name: cleaning_frontend
+    container_name: cleaning_website_backend
     ports:
-      - "5175:80"
-    env_file:
-      - ./client/.env
+      - "5175:5175"
     networks:
-      - cleaning_website
+      - cleaning-website
+    env_file: ./client/.env
     depends_on:
-      backend:
-        condition: service_started
+      - backend
     restart: always
 
 networks:
-  cleaning_website:
+  cleaning-website:
     driver: bridge
 
 volumes:
-  mongo-data:
-    driver: local
   uploads_data:
-    driver: local
+  cleaning-website-mongo:
