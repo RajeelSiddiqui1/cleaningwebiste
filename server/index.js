@@ -25,9 +25,27 @@ const app = express();
 
 // CORS
 app.use(cors({
-  origin: ["http://localhost:5173", "http://localhost:5174", "http://153.92.209.177:8081"],
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      "http://localhost:5173",
+      "http://localhost:5174", 
+      "http://153.92.209.177:8081",
+      "http://153.92.209.177:80",
+      "http://153.92.209.177"
+    ];
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   credentials: true,
+  optionsSuccessStatus: 200,
 }));
+
+// Handle preflight requests explicitly
+app.options('*', cors());
 
 app.use(cookieParser());
 // Serve uploaded images statically
