@@ -82,7 +82,7 @@ const Header = () => {
         <div className="hidden lg:flex items-center gap-4">
           <div className="flex items-center gap-2 text-dark-foreground/80">
             <Phone size={16} className="text-primary" />
-            <span className="text-sm font-medium">+92 300 1234567</span>
+            <span className="text-sm font-medium">416 804 4646</span>
           </div>
           
           {isLoggedIn ? (

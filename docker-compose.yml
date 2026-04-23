@@ -36,7 +36,7 @@ services:
     build: ./server
     container_name: cleaning_website_backend
     ports:
-      - "5002:5002"
+      - "5008:5008"
     env_file: ./server/.env
     networks:
       - cleaning-website
