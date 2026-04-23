@@ -13,7 +13,7 @@ services:
     restart: always
 
   mongo:
-    image: mongo:latest
+    image: mongo:6
     container_name: cleaning-website-mongo
     environment:
       MONGO_INITDB_DATABASE: cleaning-website-mongo
@@ -50,7 +50,7 @@ services:
   frontend:
     build:
       context: ./client
-    container_name: cleaning_website_backend
+    container_name: cleaning_website_frontend
     ports:
       - "5175:5175"
     networks:

@@ -25,7 +25,7 @@ const app = express();
 
 // CORS
 app.use(cors({
-  origin: ["http://localhost:5173", "http://localhost:5174", "http://153.92.209.177:5175", "https://madebydua.com", "https://www.madebydua.com"],
+  origin: ["http://localhost:5173", "http://localhost:5174", "http://153.92.209.177:8081"],
   credentials: true,
 }));
 
